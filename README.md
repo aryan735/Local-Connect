@@ -1,70 +1,65 @@
-LocalConnect (Under Development)
 
-LocalConnect is an industrial-level service platform designed to connect users with nearby service providers (such as tutors, electricians, and plumbers) based on category, location, and ratings.
+# LocalConnect
 
-This project is currently under active development. Features and functionality are being added progressively.
+**Status**: 🚧 In Development
 
-Key Highlights (Planned / In Progress)
+LocalConnect is a scalable, real-world service platform that connects users with local service providers such as tutors, electricians, and plumbers. The platform is designed to match users with providers based on category, location, and ratings.
 
-Java and Spring Boot backend
+---
 
-MongoDB Atlas for NoSQL storage
+## Overview
 
-Spring Security with JWT authentication
+This project focuses on building a secure, industrial-grade backend using modern Java technologies. LocalConnect is being developed to solve real-life problems and streamline local service discovery with advanced features and performance considerations.
 
-Redis integration
+---
 
-Email notifications via SMTP
+## Key Features
 
-Admin dashboard (planned)
+- Role-based access control (User, Provider, Admin)
+- JWT-based authentication
+- Service posting and retrieval
+- Location-based service discovery
+- Booking and request management (in progress)
+- Ratings and reviews (planned)
+- Email notifications
+- Admin dashboard (planned)
 
-Rating and review system
+---
 
-Location-based service discovery
+## Tech Stack
 
-Role management (User / Provider / Admin)
+- Java 17  
+- Spring Boot  
+- Spring Security  
+- MongoDB Atlas  
+- Redis Cloud  
+- Maven  
+- IntelliJ IDEA
 
-Tech Stack
+---
 
-Java 17
+## Current Progress
 
-Spring Boot
+| Feature                       | Status        |
+|------------------------------|---------------|
+| Role Management              | Completed     |
+| User Authentication          | Completed     |
+| Service Module               | Completed     |
+| Ratings & Reviews            | Completed     |
+| Booking System               | In Progress   |
+| Admin Dashboard              | Planned       |
 
-Spring Security (JWT)
+---
 
-MongoDB Atlas
+## Developer
 
-Redis Cloud
+**Aryan Raj**  
+Email: aryan.raj.codi@gmail.com  
+LinkedIn: [linkedin.com/in/aryan-raj-2b9598326](https://www.linkedin.com/in/aryan-raj-2b9598326/)  
+GitHub: [github.com/aryan735](https://github.com/aryan735)
 
-Maven
+---
 
-IntelliJ IDEA
-
-Development Status
-
-Role Management - Completed
-
-User Registration and Authentication - Completed
-
-Service Posting and Fetching - Completed
-
-Booking System - In Progress
-
-Admin Controls - Planned
-
-Rating and Review - Planned
-
-How to Contribute
-
-Feel free to fork the repository and raise a pull request. The project will be open to external contributions once a stable version is ready.
-
-Developer
-
-Aryan Raj
-Email: aryan.raj.codi@gmail.com
-LinkedIn: https://www.linkedin.com/in/aryan-raj-2b9598326/
-GitHub: https://github.com/aryan735
-
-License
+## License
 
 This project is licensed under the MIT License.
