@@ -1,0 +1,28 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@shadowrealm.5noy0.mongodb.net/?retryWrites=true&w=majority&appName=ShadowRealm
+      database: localconnectdb
+      auto-index-creation: true
+    redis:
+      host: ${REDIS_URL}
+      port: 16200
+      password: ${REDIS_PASS}
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_ID}
+    password: ${EMAIL_PASS}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /localconnect
