@@ -22,6 +22,5 @@ public class Rating {
 
     private double rating;          // 1 to 5
     private String review;       // Optional review message
-
     private LocalDateTime createdAt;
 }

@@ -13,4 +13,7 @@ public class BookingRequestDto {
 
     @NotBlank(message = "Provider ID is required")
     private String providerId;
+
+
+
 }

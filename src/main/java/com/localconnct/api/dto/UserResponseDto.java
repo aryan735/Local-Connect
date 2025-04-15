@@ -11,7 +11,10 @@ import java.util.List;
 public class UserResponseDto {
     private String id;
     private String name;
-    private String email;
+
+    private String phone;
+    private double avgRating;
+    private int totalRating;
     private List<String> roles;
     private LocationDto location;
 }

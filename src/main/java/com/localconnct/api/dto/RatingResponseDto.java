@@ -2,6 +2,7 @@ package com.localconnct.api.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,4 +17,5 @@ public class RatingResponseDto {
     private double rating;
     private String review;
     private LocalDateTime createdAt;
+
 }

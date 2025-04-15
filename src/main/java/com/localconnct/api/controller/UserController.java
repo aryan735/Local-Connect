@@ -4,6 +4,7 @@ package com.localconnct.api.controller;
 import com.localconnct.api.dto.*;
 import com.localconnct.api.exception.UserNotFoundException;
 import com.localconnct.api.service.OtpService;
+import com.localconnct.api.service.RatingService;
 import com.localconnct.api.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
@@ -25,6 +28,7 @@ public class UserController {
     private  final AuthenticationManager authenticationManager;
  private final UserService userService;
  private final OtpService otpService;
+ private final RatingService ratingService;
 
     @GetMapping
     public ResponseEntity<UserResponseDto> getUserDetails(){
@@ -92,5 +96,26 @@ public class UserController {
         userService.promoteToProvider(email); // Promote the logged-in user
         return ResponseEntity.ok("Congrats! You are now a provider.");
     }
+
+
+
+    @GetMapping("/providers")
+    public ResponseEntity<List<UserResponseDto>> getAllProviders() {
+        List<UserResponseDto> providers = userService.getAllProviders();
+        return ResponseEntity.ok(providers);
+    }
+    @GetMapping("/provider-profile/providerId/{providerId}")
+    public ResponseEntity<UserResponseDto> getProviderProfile(@PathVariable String providerId){
+        if (providerId == null || providerId.isEmpty()){
+            throw new UserNotFoundException("Please Enter providerId!");
+        }
+
+        UserResponseDto providerProfile = userService.getProviderProfile(providerId);
+        if (providerProfile==null){
+            throw new UserNotFoundException("Provider not found!");
+        }
+        return ResponseEntity.ok(providerProfile);
+    }
+
 
 }

@@ -1,30 +1,32 @@
 package com.localconnct.api.model;
 
+import com.localconnct.api.enums.BookingStatus;
+import com.localconnct.api.enums.PaymentStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
+@Document(collection = "bookings")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "bookings")
-public class Booking {
+public class BookingModel {
     @Id
-    private String id;
-    @NonNull
-    private String serviceId;
-    @NonNull
+    private String bookingId;
     private String userId;
-    @NonNull
     private String providerId;
+    private String serviceId;
 
     private LocalDateTime bookingTime;
+    private BookingStatus status;
 
-    @NonNull
-    private String status; //PENDING, CONFIRMED, COMPLETED, CANCELLED
+
+    private PaymentStatus paymentStatus = PaymentStatus.UNPAID;  // Default value is UNPAID
+
 }
