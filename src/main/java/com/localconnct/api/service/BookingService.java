@@ -1,10 +1,7 @@
 package com.localconnct.api.service;
 
 
-import com.localconnct.api.dto.BookingRequestDto;
-import com.localconnct.api.dto.BookingResponseDto;
-import com.localconnct.api.dto.PaymentRequestDto;
-import com.localconnct.api.dto.PaymentResponseDto;
+import com.localconnct.api.dto.*;
 import com.localconnct.api.enums.BookingStatus;
 import com.localconnct.api.enums.PaymentStatus;
 import com.localconnct.api.exception.BookingNotFoundException;
@@ -18,7 +15,6 @@ import com.localconnct.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +42,7 @@ public class BookingService {
                     .bookingTime(LocalDateTime.now())
                     .status(BookingStatus.REQUESTED)
                     .build();
+        bookingRepository.save(bookingModel);
               String subject =  """
             Hello %s,
 
@@ -54,6 +51,7 @@ public class BookingService {
             🧾 Booking Details:
             - User ID: %s
             - Service ID: %s
+            -Booking ID : %s
             - Booking Time: %s
             
             Please confirm or reject this booking request by logging in or using the API.
@@ -64,19 +62,20 @@ public class BookingService {
                        provider.getName(),
                       bookingRequestDto.getUserId(),
                       bookingRequestDto.getServiceId(),
+                      bookingModel.getBookingId(),
                       LocalDateTime.now()
-              );
+                      );
 
-            bookingRepository.save(bookingModel);
+
             sendEmail.sendMail(providerEmail,
-                    "Booking Request By A User with service Id : " + bookingRequestDto.getServiceId(),
+                    "Booking Request By A User with Service Id : " + bookingRequestDto.getServiceId(),
 
                     subject);
             return "Booking Done";
 
     }
 
-    public String respondUser(BookingResponseDto bookingResponseDto) {
+    public String respondUser(BookingResponseDto2 bookingResponseDto) {
         if(bookingResponseDto==null){
             return "The body data is not found!";
         }
@@ -88,6 +87,10 @@ public class BookingService {
         //Finding the exact booking
         BookingModel bookingModel = bookingRepository.findById(bookingResponseDto.getBookingId())
                 .orElseThrow(() -> new BookingNotFoundException("Booking with this id : " + bookingResponseDto.getBookingId() + " Not Found!"));
+
+        bookingModel.setBookingTime(LocalDateTime.now());
+
+        bookingRepository.save(bookingModel);
         //Accepted Mail
         String acceptedSubject = """
         Hello %s,
@@ -110,7 +113,7 @@ public class BookingService {
                 bookingResponseDto.getBookingId(),
                 bookingResponseDto.getProviderId(),
                 bookingResponseDto.getServiceId(),
-                bookingResponseDto.getBookingTime()
+                bookingModel.getBookingTime()
         );
 
         //Rejected Mail
@@ -133,7 +136,7 @@ public class BookingService {
                 bookingResponseDto.getBookingId(),
                 bookingResponseDto.getProviderId(),
                 bookingResponseDto.getServiceId(),
-                bookingResponseDto.getBookingTime()
+                bookingModel.getBookingTime()
         );
 
 
@@ -150,6 +153,7 @@ public class BookingService {
                     acceptedSubject);
         }
         bookingRepository.save(bookingModel);
+
         return "Done";
     }
 

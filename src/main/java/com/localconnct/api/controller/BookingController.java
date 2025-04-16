@@ -1,11 +1,9 @@
 package com.localconnct.api.controller;
 
 
-import com.localconnct.api.dto.BookingRequestDto;
-import com.localconnct.api.dto.BookingResponseDto;
-import com.localconnct.api.dto.PaymentRequestDto;
-import com.localconnct.api.dto.PaymentResponseDto;
+import com.localconnct.api.dto.*;
 import com.localconnct.api.exception.BookingNotFoundException;
+import com.localconnct.api.exception.UnauthorizedAccessException;
 import com.localconnct.api.exception.UserNotFoundException;
 import com.localconnct.api.model.User;
 import com.localconnct.api.repository.UserRepository;
@@ -45,8 +43,13 @@ public class BookingController {
     }
 
     @PostMapping("/respond")
-    @PreAuthorize("hasRole('PROVIDER')") //Only provider can access it
-    public ResponseEntity<String> respondToTheUser(@Valid @RequestBody BookingResponseDto bookingResponseDto){
+    public ResponseEntity<String> respondToTheUser( @RequestBody BookingResponseDto2 bookingResponseDto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email);
+        if (!user.getRoles().contains("PROVIDER")){
+            throw new UnauthorizedAccessException("You are not Authorize to access this.");
+        }
         String message = bookingService.respondUser(bookingResponseDto);
         if (message==null || message.isEmpty()){
             return new ResponseEntity<>("Response is failed!",HttpStatus.BAD_REQUEST);
