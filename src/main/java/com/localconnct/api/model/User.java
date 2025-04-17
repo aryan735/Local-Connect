@@ -31,4 +31,6 @@ public class User {
     private Location location;
 
     private List<String> roles; //To manage "USER" , "ADMIN" roles
+    private List<String> serviceIdsProvided;
+
 }

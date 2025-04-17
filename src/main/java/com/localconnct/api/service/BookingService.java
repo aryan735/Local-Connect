@@ -4,9 +4,7 @@ package com.localconnct.api.service;
 import com.localconnct.api.dto.*;
 import com.localconnct.api.enums.BookingStatus;
 import com.localconnct.api.enums.PaymentStatus;
-import com.localconnct.api.exception.BookingNotFoundException;
-import com.localconnct.api.exception.PaymentFailedException;
-import com.localconnct.api.exception.UserNotFoundException;
+import com.localconnct.api.exception.*;
 import com.localconnct.api.mapper.SendEmail;
 import com.localconnct.api.model.BookingModel;
 import com.localconnct.api.model.User;
@@ -16,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -269,6 +268,68 @@ public class BookingService {
                         .build())
                         .toList();
     }
+    public String cancelBooking(String userId, String bookingId) {
+        try {
+            BookingModel booking = bookingRepository.findById(bookingId)
+                    .orElseThrow(() -> new BookingNotFoundException("Booking not found"));
+            String providerId = booking.getProviderId();
+            User provider = userRepository.findById(providerId)
+                    .orElseThrow(() -> new UserNotFoundException("Provider not found!"));
+            String providerEmail = provider.getEmail();
 
+            if (!booking.getUserId().equals(userId)) {
+                throw new UnauthorizedAccessException("You can't cancel this booking.");
+            }
+            if (booking.getStatus().equals(BookingStatus.CONFIRMED)) {
+                throw new BookingCancellationException("Cannot cancel after confirming the booking.");
+            }
+
+            if (booking.getPaymentStatus() == PaymentStatus.PAID) {
+                throw new BookingCancellationException("Cannot cancel a paid booking.");
+            }
+            String cancellationEmail = """
+                    Hello %s,
+
+                    🚫 A booking has been cancelled by the user.
+
+                    📄 Booking Details:
+                    - Booking ID: %s
+                    - Service ID: %s
+                    - User ID: %s
+                    - Cancellation Time: %s
+
+                    Please note that since this booking was not confirmed or paid, no further action is required on your part.
+
+                    Thank you for using LocalConnect!
+
+                    Best regards, \s
+                    LocalConnect Team
+                    """.formatted(
+                    provider.getName(),
+                    booking.getBookingId(),
+                    booking.getServiceId(),
+                    booking.getUserId(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a"))
+            );
+
+
+            booking.setStatus(BookingStatus.CANCELLED);
+            sendEmail.sendMail(providerEmail, "Booking Cancelled: ID " + booking.getBookingId(), cancellationEmail);
+            bookingRepository.save(booking);
+
+
+            log.info("Booking ID {} cancelled by user ID {}", bookingId, userId);
+            return "Booking cancelled successfully.";
+
+        }catch (BookingNotFoundException | UserNotFoundException | UnauthorizedAccessException |
+                BookingCancellationException e) {
+            log.warn("Expected error while cancelling booking: {}", e.getMessage());
+            throw e; // re-throw to be handled globally or return custom message
+        }
+        catch (Exception e){
+            log.error("Unexpected error occurred while cancelling booking ID {}: {}", bookingId, e.getMessage(), e);
+            throw new BookingCancellationException("An unexpected error occurred. Please try again later.");
+        }
+    }
 
 }

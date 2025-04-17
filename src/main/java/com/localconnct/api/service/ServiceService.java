@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -46,8 +47,15 @@ public class ServiceService {
                         .providerEmail(provider.getEmail())
                         .location(locationMapper.mapToLocation(requestDto.getLocation()))
                         .build();
-                userRepository.save(provider);
+
                 serviceRepository.save(serviceModel);
+                if (provider.getServiceIdsProvided() == null) {
+                    provider.setServiceIdsProvided(new ArrayList<>());
+                }
+                provider.getServiceIdsProvided().add(serviceModel.getServiceId());
+                userRepository.save(provider);
+
+
                 return "Your service is registered Successfully!!!";
             }
         }catch (Exception e){

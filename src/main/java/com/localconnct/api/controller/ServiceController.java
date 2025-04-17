@@ -1,13 +1,17 @@
 package com.localconnct.api.controller;
 
 
+import com.localconnct.api.dto.ServiceContentDto;
 import com.localconnct.api.dto.ServiceRequestDto;
 import com.localconnct.api.dto.ServiceResponseDto;
 import com.localconnct.api.enums.ServiceCategory;
 import com.localconnct.api.exception.CategoryNotFoundException;
+import com.localconnct.api.exception.UnauthorizedAccessException;
 import com.localconnct.api.exception.UserNotFoundException;
+import com.localconnct.api.model.ServiceContent;
 import com.localconnct.api.model.User;
 import com.localconnct.api.repository.UserRepository;
+import com.localconnct.api.service.AiContentService;
 import com.localconnct.api.service.ServiceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +32,7 @@ public class ServiceController {
 
     private final ServiceService serviceService;
     private final UserRepository userRepository;
+    private final AiContentService aiContentService;
 
 
     @PreAuthorize("hasRole('PROVIDER')")
@@ -43,7 +48,7 @@ public class ServiceController {
     }
 
     @GetMapping("get-services")
-    public ResponseEntity<List<ServiceResponseDto>> AllServices(){
+    public ResponseEntity<List<ServiceResponseDto>> getAllServices(){
 
         List<ServiceResponseDto> allServices = serviceService.getAllServices();
         if (allServices != null){
@@ -54,7 +59,7 @@ public class ServiceController {
 
     @PutMapping("update-services")
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> getAllServices(@Valid @RequestBody ServiceResponseDto requestDto){
+    public ResponseEntity<String> updateServices(@Valid @RequestBody ServiceResponseDto requestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         boolean isAvl = serviceService.updateService(email, requestDto);
@@ -78,4 +83,19 @@ public class ServiceController {
         }
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.NOT_FOUND);
     }
+
+    @PostMapping("/generate")
+    public ResponseEntity<String> generateTitleAndDescription(@RequestBody ServiceContentDto serviceContent) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User provider = userRepository.findByEmail(email);
+        if (provider == null || !provider.getRoles().contains("PROVIDER")) {
+            throw new UnauthorizedAccessException("Only providers can generate service content.");
+        }
+
+        String  content = aiContentService.generateServiceContent(serviceContent);
+        return ResponseEntity.ok(content);
+    }
+
 }

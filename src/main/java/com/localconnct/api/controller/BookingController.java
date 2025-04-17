@@ -12,9 +12,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class BookingController {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(message,HttpStatus.OK);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @PostMapping("/respond")
@@ -87,6 +87,7 @@ public class BookingController {
         return new ResponseEntity<>(bookingList,HttpStatus.OK);
     }
 
+    @Transactional
     @PostMapping("/payment")
     public ResponseEntity<PaymentResponseDto> paymentToProvider(@RequestBody PaymentRequestDto paymentResponseDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -98,4 +99,17 @@ public class BookingController {
         PaymentResponseDto payment = bookingService.payment(userId, paymentResponseDto);
         return new ResponseEntity<>(payment,HttpStatus.OK);
     }
+    @PostMapping("/cancel-booking/{bookingId}")
+    public ResponseEntity<String> cancelBooking(@PathVariable String bookingId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(auth.getName());
+
+        if (user == null) throw new UserNotFoundException("User not found!");
+
+        String message = bookingService.cancelBooking(user.getId(), bookingId);
+        return ResponseEntity.ok(message);
+    }
+
+
+
 }
