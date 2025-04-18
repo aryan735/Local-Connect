@@ -37,6 +37,7 @@ public class SpringSecurity {
                 )
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/register/**").permitAll()
+                        .requestMatchers("/auth/google/**").permitAll()
                         .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
                         .requestMatchers("/users/**").hasRole(Role.USER.name())
                         .requestMatchers("/ratings/**").hasRole(Role.USER.name())

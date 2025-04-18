@@ -1,4 +1,11 @@
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
   data:
     mongodb:
       uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@shadowrealm.5noy0.mongodb.net/?retryWrites=true&w=majority&appName=ShadowRealm
