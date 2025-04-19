@@ -109,7 +109,10 @@ public class BookingController {
         String message = bookingService.cancelBooking(user.getId(), bookingId);
         return ResponseEntity.ok(message);
     }
-
-
-
+    @GetMapping("/provider/bookings")
+    public ResponseEntity<List<BookingResponseDto>> getBookingsForProvider(Authentication authentication) {
+        String email = authentication.getName(); // Assuming email is the username
+        List<BookingResponseDto> bookings = bookingService.getBookingsForProvider(email);
+        return ResponseEntity.ok(bookings);
+    }
 }

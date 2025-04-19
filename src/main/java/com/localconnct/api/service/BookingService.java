@@ -142,13 +142,13 @@ public class BookingService {
         if (BookingStatus.REJECTED.name().equalsIgnoreCase(bookingResponseDto.getStatus().name())){
             bookingModel.setStatus(BookingStatus.REJECTED);
             sendEmail.sendMail(user.getEmail(),
-                    "Request Rejected By The Booing ID: " + bookingResponseDto.getBookingId(),
+                    "Request Rejected By The Booking ID: " + bookingResponseDto.getBookingId(),
                     rejectedSubject);
         }
         if (BookingStatus.ACCEPTED.name().equalsIgnoreCase(bookingResponseDto.getStatus().name())) {
             bookingModel.setStatus(BookingStatus.ACCEPTED);
             sendEmail.sendMail(user.getEmail(),
-                    "Request Accepted By The Booing ID: " + bookingResponseDto.getBookingId(),
+                    "Request Accepted By The Booking ID: " + bookingResponseDto.getBookingId(),
                     acceptedSubject);
         }
         bookingRepository.save(bookingModel);
@@ -332,4 +332,17 @@ public class BookingService {
         }
     }
 
+    public List<BookingResponseDto> getBookingsForProvider(String email) {
+        User provider = userRepository.findByEmail(email);
+        if (provider==null){
+            throw new UserNotFoundException("user not found.");
+        }
+        if (!provider.getRoles().contains("PROVIDER")) {
+            throw new UnauthorizedAccessException("Access denied: not a provider");
+        }
+
+        String providerId = provider.getId();
+        // Fetch all bookings related to this provider
+        return bookingRepository.findByProviderId(providerId);
+    }
 }
