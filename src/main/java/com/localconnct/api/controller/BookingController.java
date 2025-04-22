@@ -99,6 +99,7 @@ public class BookingController {
         PaymentResponseDto payment = bookingService.payment(userId, paymentResponseDto);
         return new ResponseEntity<>(payment,HttpStatus.OK);
     }
+
     @PostMapping("/cancel-booking/{bookingId}")
     public ResponseEntity<String> cancelBooking(@PathVariable String bookingId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

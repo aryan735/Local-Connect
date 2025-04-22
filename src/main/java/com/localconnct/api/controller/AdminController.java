@@ -4,13 +4,16 @@ import com.localconnct.api.dto.BookingResponseDto;
 import com.localconnct.api.dto.ServiceResponseDto;
 import com.localconnct.api.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -28,6 +31,9 @@ public class AdminController {
     @PostMapping("/delete-user/{email}")
     public ResponseEntity<String> deleteUser(@PathVariable String email){
         adminService.deleteUser(email);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentAdminEmail = authentication.getName();
+        log.info("Admin {} deleted user {}", currentAdminEmail, email);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User Deleted Successfully!");
     }
     @GetMapping("/get-all-services/{providerEmail}")

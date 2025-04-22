@@ -2,8 +2,10 @@ package com.localconnct.api.repository;
 
 import com.localconnct.api.model.ServiceModel;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+@Repository
 public interface ServiceRepository extends MongoRepository<ServiceModel, String> {
 
     // Custom query methods

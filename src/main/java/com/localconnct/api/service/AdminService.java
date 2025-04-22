@@ -13,8 +13,6 @@ import com.localconnct.api.repository.ServiceRepository;
 import com.localconnct.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.management.relation.RoleInfoNotFoundException;
 import java.util.Comparator;
 import java.util.List;
 
