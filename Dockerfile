@@ -1,13 +1,10 @@
-FROM openjdk:17-jdk-alpine
-
-# Set the working directory in the container
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy the built JAR file into the container
-COPY target/localconnect-api-0.0.1-SNAPSHOT.jar app.jar
-
-# Expose port 8080 (or any port your application uses)
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Run the JAR file using java
 CMD ["java", "-jar", "app.jar"]
