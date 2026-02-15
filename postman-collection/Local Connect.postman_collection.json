@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "3a9e90ba-4990-4b77-8722-f7b99bcefff2",
+		"name": "Local Connect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40336993"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getUserDetatail",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Updateuser",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Sending Otp",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Promote to Provider",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "OAuth Login",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Provider",
+			"item": [
+				{
+					"name": "Create Service",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "get providers",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Provider Profile by id",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service",
+			"item": [
+				{
+					"name": "get All services",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Update Service",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Service by Category",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rating",
+			"item": [
+				{
+					"name": "post rating",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Rating by serviceId",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Provider's rating",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "Respond the Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Book A Service",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Payment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gemini ServiceContent generator",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-goog-api-key",
+						"value": "YOUR_API_KEY"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"contents\": [\r\n      {\r\n        \"parts\": [\r\n          {\r\n            \"text\": \"Explain how AI works in a few words\"\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent",
+					"protocol": "https",
+					"host": [
+						"generativelanguage",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"v1beta",
+						"models",
+						"gemini-3-flash-preview:generateContent"
+					]
+				},
+				"description": "Generated from cURL: curl \"https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent\" \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H \"x-goog-api-key: YOUR_API_KEY\" \\\r\n  -X POST \\\r\n  -d '{\r\n    \"contents\": [\r\n      {\r\n        \"parts\": [\r\n          {\r\n            \"text\": \"Explain how AI works in a few words\"\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }'"
+			},
+			"response": []
+		}
+	]
+}
