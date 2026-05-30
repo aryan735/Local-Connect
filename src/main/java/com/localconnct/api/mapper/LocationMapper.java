@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LocationMapper {
     public Location mapToLocation(LocationDto locationDto) {
+        if (locationDto == null) return null;
         return Location.builder()
                 .latitude(locationDto.getLatitude())
                 .longitude(locationDto.getLongitude())
@@ -17,8 +18,8 @@ public class LocationMapper {
                 .build();
     }
 
-
     public LocationDto mapToLocationDto(Location location) {
+        if (location == null) return null;
         return LocationDto.builder()
                 .latitude(location.getLatitude())
                 .longitude(location.getLongitude())
