@@ -38,20 +38,18 @@ public class UserService {
      private final RatingRepository ratingRepository;
 
     public void saveNewUser(UserRequestDto request){
-        try {
-            User user = User.builder()
-                    .name(request.getName())
-                    .email(request.getEmail())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .phone(request.getPhone())
-                    .location(locationMapper.mapToLocation(request.getLocation()))
-                    .roles(Arrays.asList(Role.USER.name()))
-                    .build();
-
-            userRepository.save(user);
-        }catch (Exception e){
-            log.error("Error :",e);
+        if (userRepository.findByEmail(request.getEmail()) != null) {
+            throw new IllegalArgumentException("An account with this email already exists.");
         }
+        User user = User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .phone(request.getPhone())
+                .location(locationMapper.mapToLocation(request.getLocation()))
+                .roles(Arrays.asList(Role.USER.name()))
+                .build();
+        userRepository.save(user);
     }
 
     public UserResponseDto findUserByEmail(String email) {
