@@ -252,8 +252,8 @@ public class BookingService {
             throw new UserNotFoundException("UserId is not Found!");
         }
         List<BookingModel> bookings = bookingRepository.findByUserId(userId);
-        if (bookings.isEmpty()){
-            throw new BookingNotFoundException("Bookings Not Found!");
+        if (bookings == null || bookings.isEmpty()){
+            return List.of();
         }
 
         return bookings.stream()
