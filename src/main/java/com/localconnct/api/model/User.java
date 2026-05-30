@@ -25,9 +25,7 @@ public class User {
     @NonNull
     private String password; //will be stored as encrypted(BCrypt)
 
-    @NonNull
     private String phone;
-    @NonNull
     private Location location;
 
     private List<String> roles; //To manage "USER" , "ADMIN" roles
